@@ -431,18 +431,20 @@ void nnet::back_propagation(const int &pnum)
 	int i,j;
 	double sum;
 
-	// 重みの変化量[隠れ層ー＞出力層]を計算
+	// 重みの変化量[出力層ー＞教師信号]を計算
 	// 隠れ層の学習信号を計算
 	for(i=0;i<outputnum;i++){
 		// 出力層での誤差信号=(教師信号-出力）* f'(出力)
-		// f'(出力)はシグモイド関数の微分
+		// f'(出力)は出力関数の微分
 		E11[i]=(Ti[pnum][i]-Oi[i]) * outputFunc_diff(Oi[i]);
 	}
 
+	// 重みの変化量[隠れ層10ー＞出力層]を計算
 	for(i=0;i<hiddennum10;i++){
 		sum = 0;
 		for(j=0;j<outputnum;j++){
 			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
+			// f'(出力)は活性化関数の微分
 			sum += W11[j][i]*E11[j];
 		}
 		E10[i] = sum * activationFunc_diff(H10i[i]);
@@ -450,7 +452,7 @@ void nnet::back_propagation(const int &pnum)
 
 	for(i=0;i<hiddennum9;i++){
 		sum = 0;
-		for(j=0;j<outputnum;j++){
+		for(j=0;j<hiddennum10;j++){
 			sum += W10[j][i]*E10[j];
 		}
 		E9[i] = sum * activationFunc_diff(H9i[i]);
@@ -458,7 +460,7 @@ void nnet::back_propagation(const int &pnum)
 
 	for(i=0;i<hiddennum8;i++){
 		sum = 0;
-		for(j=0;j<outputnum;j++){
+		for(j=0;j<hiddennum9;j++){
 			sum += W9[j][i]*E9[j];
 		}
 		E8[i] = sum * activationFunc_diff(H8i[i]);
@@ -466,7 +468,7 @@ void nnet::back_propagation(const int &pnum)
 
 	for(i=0;i<hiddennum7;i++){
 		sum = 0;
-		for(j=0;j<outputnum;j++){
+		for(j=0;j<hiddennum8;j++){
 			sum += W8[j][i]*E8[j];
 		}
 		E7[i] = sum * activationFunc_diff(H7i[i]);
@@ -711,7 +713,7 @@ double nnet::random()
 }
 
 // Leaky Relu function
-// alpha=0.001
+// alpha=0.0001
 double nnet::activationFunc(double x)
 {
 	return ((x >= 0)?  x : 0.1 * x);
@@ -781,7 +783,7 @@ int main()
 
   nnet net(4,10,10,10,10,10,10,10,10,10,10,3,150);
 
-  net.setAlpha(0.001);	// ReLu
+  net.setAlpha(0.0001);	// ReLu
   net.setErrorEv(0.05);
 
   //ファイルの読み込み
