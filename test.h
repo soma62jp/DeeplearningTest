@@ -87,7 +87,7 @@ class nnet
 		// back propagation
 		std::vector<double> E1;           					// 入力<-隠れ層1での誤差
 		std::vector<double> E2;           					// 隠れ層1<-隠れ層2での誤差
-		std::vector<double> E3;           					// 隠れ層2<-出力層での誤差
+		std::vector<double> E3;           					// 隠れ層2<-隠れ層3での誤差
 		std::vector<double> E4;
 		std::vector<double> E5;
 		std::vector<double> E6;
@@ -95,7 +95,7 @@ class nnet
 		std::vector<double> E8;
 		std::vector<double> E9;
 		std::vector<double> E10;
-		std::vector<double> E11;
+		std::vector<double> E11;							// 隠れ層10<-出力層での誤差
 
 		// const parameter
 		double ALPHA;
