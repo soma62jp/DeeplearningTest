@@ -29,7 +29,6 @@ class nnet
 		void setPredictData(const int &i,const double &value);
 		void train();
 		int predict(const int &pnum);
-		//void predict();
 
 		void outlog(std::string str);
 		void outlog(double value);

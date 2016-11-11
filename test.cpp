@@ -711,7 +711,6 @@ void nnet::train()
 	}
 }
 
-//void nnet::predict()
 int nnet::predict(const int &pnum)
 {
 
@@ -745,7 +744,7 @@ double nnet::random()
 }
 
 // Leaky Relu function
-// alpha=0.005
+// alpha=0.001
 double nnet::activationFunc(double x)
 {
 	return ((x >= 0)?  x : 0.1 * x);
