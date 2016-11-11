@@ -7,9 +7,6 @@
 
 #include "test.h"
 
-//using namespace std;
-
-
 nnet::nnet(const int &inum,
 	const int &hnum1,
 	const int &hnum2,
@@ -331,99 +328,81 @@ void nnet::foward_propagation(const int &pnum)
 	for(i=0;i<hiddennum2;i++){
 		sum=0;
 		for(j=0;j<hiddennum1;j++){
-			// 重み×入力値
 			sum+=W2[i][j]*H1i[j];
 		}
 		sum+=W2[i][hiddennum1];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H2i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum3;i++){
 		sum=0;
 		for(j=0;j<hiddennum2;j++){
-			// 重み×入力値
 			sum+=W3[i][j]*H2i[j];
 		}
 		sum+=W3[i][hiddennum2];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H3i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum4;i++){
 		sum=0;
 		for(j=0;j<hiddennum3;j++){
-			// 重み×入力値
 			sum+=W4[i][j]*H3i[j];
 		}
 		sum+=W4[i][hiddennum3];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H4i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum5;i++){
 		sum=0;
 		for(j=0;j<hiddennum4;j++){
-			// 重み×入力値
 			sum+=W5[i][j]*H4i[j];
 		}
 		sum+=W5[i][hiddennum4];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H5i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum6;i++){
 		sum=0;
 		for(j=0;j<hiddennum5;j++){
-			// 重み×入力値
 			sum+=W6[i][j]*H5i[j];
 		}
 		sum+=W6[i][hiddennum5];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H6i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum7;i++){
 		sum=0;
 		for(j=0;j<hiddennum6;j++){
-			// 重み×入力値
 			sum+=W7[i][j]*H6i[j];
 		}
 		sum+=W7[i][hiddennum6];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H7i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum8;i++){
 		sum=0;
 		for(j=0;j<hiddennum7;j++){
-			// 重み×入力値
 			sum+=W8[i][j]*H7i[j];
 		}
 		sum+=W8[i][hiddennum7];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H8i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum9;i++){
 		sum=0;
 		for(j=0;j<hiddennum8;j++){
-			// 重み×入力値
 			sum+=W9[i][j]*H8i[j];
 		}
 		sum+=W9[i][hiddennum8];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H9i[i] = activationFunc(sum) * DROPOUT;
 	}
 
 	for(i=0;i<hiddennum10;i++){
 		sum=0;
 		for(j=0;j<hiddennum9;j++){
-			// 重み×入力値
 			sum+=W10[i][j]*H9i[j];
 		}
 		sum+=W10[i][hiddennum9];						// bias項
-		// 重み×入力値の総和にバイアス項を足してアクティベーション関数に通したものが中間層入力
 		H10i[i] = activationFunc(sum) * DROPOUT;
 	}
 
@@ -435,8 +414,7 @@ void nnet::foward_propagation(const int &pnum)
 			sum+=W11[i][j]*H10i[j];
 		}
 		sum+=W11[i][hiddennum10];						// bias項
-		// 重み×中間層入力値の総和にバイアス項を足してアクティベーション関数に通したものが出力層
-		//Oi[i]=outputFunc(sum);
+		// softmax 計算
 		wrkOi[i]=sum;
 	}
 
@@ -473,7 +451,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum9;i++){
 		sum = 0;
 		for(j=0;j<outputnum;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W10[j][i]*E10[j];
 		}
 		E9[i] = sum * activationFunc_diff(H9i[i]);
@@ -482,7 +459,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum8;i++){
 		sum = 0;
 		for(j=0;j<outputnum;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W9[j][i]*E9[j];
 		}
 		E8[i] = sum * activationFunc_diff(H8i[i]);
@@ -491,7 +467,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum7;i++){
 		sum = 0;
 		for(j=0;j<outputnum;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W8[j][i]*E8[j];
 		}
 		E7[i] = sum * activationFunc_diff(H7i[i]);
@@ -500,7 +475,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum6;i++){
 		sum = 0;
 		for(j=0;j<hiddennum7;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W7[j][i]*E7[j];
 		}
 		E6[i] = sum * activationFunc_diff(H6i[i]);
@@ -509,7 +483,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum5;i++){
 		sum = 0;
 		for(j=0;j<hiddennum6;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W6[j][i]*E6[j];
 		}
 		E5[i] = sum * activationFunc_diff(H5i[i]);
@@ -518,7 +491,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum4;i++){
 		sum = 0;
 		for(j=0;j<hiddennum5;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W5[j][i]*E5[j];
 		}
 		E4[i] = sum * activationFunc_diff(H4i[i]);
@@ -527,7 +499,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum3;i++){
 		sum = 0;
 		for(j=0;j<hiddennum4;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W4[j][i]*E4[j];
 		}
 		E3[i] = sum * activationFunc_diff(H3i[i]);
@@ -536,7 +507,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum2;i++){
 		sum = 0;
 		for(j=0;j<hiddennum3;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W3[j][i]*E3[j];
 		}
 		E2[i] = sum * activationFunc_diff(H2i[i]);
@@ -545,7 +515,6 @@ void nnet::back_propagation(const int &pnum)
 	for(i=0;i<hiddennum1;i++){
 		sum = 0;
 		for(j=0;j<hiddennum2;j++){
-			// 中間層での誤差信号=f'(隠れ層出力) * 隠れ層->出力層重み * 隠れ層<-出力層での誤差
 			sum += W2[j][i]*E2[j];
 		}
 		E1[i] = sum * activationFunc_diff(H1i[i]);
@@ -696,12 +665,10 @@ void nnet::train()
 		for(i=0;i<patternnum;i++){
 			foward_propagation(i);
 			for(j=0;j<outputnum;j++){
-				// --誤差関数
-				// https://github.com/tiny-dnn/tiny-dnn/wiki/%E5%AE%9F%E8%A3%85%E3%83%8E%E3%83%BC%E3%83%88
+				// 損失関数
 				//verror+=pow((Ti[i][j] - Oi[j]) ,2.0) * 0.5;   // 二乗誤差
 				//verror+= -Ti[i][j] * std::log(Oi[j]) - (1.0 - Ti[i][j]) * std::log(1.0 - Oi[j]);	// 交差エントロピー
-				verror+= -Ti[i][j] * std::log(Oi[j] + delta_err); 												// 交差エントロピー（マルチクラス）
-				// --
+				verror+= -Ti[i][j] * std::log(Oi[j] + delta_err); 									// 交差エントロピー（マルチクラス）
 			}
 		}
 		verror /= (double)patternnum;
@@ -780,13 +747,11 @@ double nnet::urand()
 
 void nnet::outlog(double value)
 {
-	//Form1->Memo1->Lines->Add(FloatToStr(value));
 	std::cout << value << std::endl;
 }
 
 void nnet::outlog(std::string str)
 {
-	//Form1->Memo1->Lines->Add(str.c_str());
 	std::cout << str << std::endl;
 }
 
